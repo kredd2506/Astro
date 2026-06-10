@@ -1,0 +1,50 @@
+---
+layout: default
+title: ASTRA-sim Collective Scaling
+---
+<div class="post">
+  <h2>Modeling AllReduce / AllGather Scaling in ASTRA-sim</h2>
+  <p class="post-date">June 2026</p>
+
+  <p>
+    A simulation study of <strong>collective communication</strong> for
+    distributed ML: how <code>AllReduce</code> and <code>AllGather</code> latency
+    scales across a multi-hop <strong>2-D torus</strong> versus a one-hop
+    <strong>switch</strong> fabric, and where each collective crosses from
+    <strong>latency-bound</strong> to <strong>bandwidth-bound</strong> as a
+    function of message size (1&nbsp;KiB&ndash;1&nbsp;GiB) and node count
+    (4&ndash;64).
+  </p>
+
+  <p>
+    Built on <a href="https://github.com/astra-sim/astra-sim">ASTRA-sim</a> with
+    a reproducible Docker + Chakra + Python harness. The <strong>analytical</strong>
+    backend sweeps the full 220-point grid; the <strong>ns-3</strong> packet-level
+    backend independently validates the regimes.
+  </p>
+
+  <p>
+    <strong>Headline:</strong> the torus's advantage over a switch is largest when
+    latency-bound at scale (up to <strong>14&times;</strong> at 64 NPUs / 1&nbsp;KiB)
+    and collapses to <strong>~1.1&ndash;1.5&times;</strong> when bandwidth-bound at
+    1&nbsp;GiB &mdash; topology matters most exactly where hop count, not bytes,
+    dominates.
+  </p>
+
+  <p>
+    <a href="https://github.com/kredd2506/Astro"><strong>Code &amp; data on GitHub</strong></a>
+    &nbsp;&middot;&nbsp;
+    <a href="{{ site.url }}/about">About this work</a>
+  </p>
+</div>
+
+<h3>Posts</h3>
+<div class="listing">
+    {% for post in paginator.posts %}
+    <div class="post other link">
+      <h2><a href="{{site.url}}{{post.url}}">{{ post.title }}</a></h2>
+      <p class="post-date">{{ post.date | date_to_string }}</p>
+      {{ post.excerpt }}
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,26 @@
+name: ASTRA-sim · Collective Scaling
+description: >
+    Modeling AllReduce / AllGather scaling in ASTRA-sim across torus and switch
+    topologies on the analytical and ns-3 backends — latency-bound vs
+    bandwidth-bound as a function of message size and node count.
+about: >
+    A simulation study of collective-communication scaling for distributed ML,
+    built on ASTRA-sim with a reproducible Docker + Chakra + Python harness.
+
+master_repo: false
+url: "https://kredd2506.github.io/Astro"
+baseurl: ""
+markdown: kramdown
+highlighter: rouge
+
+plugins: ['jekyll-paginate', 'jekyll-gist', 'jekyll-feed']
+paginate: 10
+
+logo:             logo.png
+disqus_shortname:
+rtl: false
+owner:
+  name:           Manish Reddy
+  avatar:         "https://avatars.githubusercontent.com/u/kredd2506"
+  email:          "kreddy.manish@gmail.com"
+  github:         https://github.com/kredd2506
