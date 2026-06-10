@@ -6,8 +6,10 @@ Modeling **AllReduce / AllGather** scaling in
 **latency-bound** vs **bandwidth-bound** behavior as a function of collective
 message size and node count.
 
-📝 Write-up / blog: **[`site/`](site/)** (Jekyll "White Paper" theme).
-The post: [`site/_posts/2026-06-10-modeling-allreduce-allgather-scaling-in-astra-sim.md`](site/_posts/2026-06-10-modeling-allreduce-allgather-scaling-in-astra-sim.md).
+📝 **Write-up / project site: [kredd2506.github.io/Astro](https://kredd2506.github.io/Astro/)**
+— a 4-post series (overview → the two regimes → scaling/when-topology-matters →
+ns-3 validation). The site sources live on the [`gh-pages`](https://github.com/kredd2506/Astro/tree/gh-pages)
+branch (Jekyll "White Paper" theme); this `main` branch holds the experiment harness.
 
 ## What's here
 
