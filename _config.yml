@@ -9,7 +9,7 @@ about: >
 
 master_repo: false
 url: "https://kredd2506.github.io/Astro"
-baseurl: ""
+baseurl: "/Astro"
 markdown: kramdown
 highlighter: rouge
 
