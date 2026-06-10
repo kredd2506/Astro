@@ -137,16 +137,23 @@ bandwidth and the topology choice matters far less.
 The analytical backend is an idealized link model — fast, great for sweeping a
 big grid, but it does not model packet-level congestion, PFC, or congestion
 control. ASTRA-sim's **ns-3 backend** does. I rebuilt it (`./ns3 configure
---enable-mpi && ./ns3 build AstraSimNetwork`) and prepared a matched 8-node
-validation slice: a one-hop **switch** fabric vs a **ring** (= 1-D torus), both
-pinned to **400 Gbps / 500 ns** links so the only difference is fabric
-structure, driving the *same* Chakra workloads through ns-3's packet-level RDMA
-model. The purpose is to confirm the regimes the analytical model predicts — a
-flat latency-bound floor, a slope-1 bandwidth-bound ramp, and switch-vs-ring
-ordering — survive once protocol and congestion overheads are modeled (so
-absolute numbers will differ from the analytical run while the *shape* should
-line up). The matched topology files and runner are in the repo; the packet-level
-slice is the next run.
+--enable-mpi && ./ns3 build AstraSimNetwork`) and ran a matched 8-node slice: a
+one-hop **switch** fabric vs a **ring** (= 1-D torus), both pinned to **400 Gbps
+/ 500 ns** links so the only difference is fabric structure, driving the *same*
+Chakra workloads through ns-3's packet-level RDMA model across 16 KiB → 16 MiB.
+
+![ns-3 vs analytical validation, 8 NPUs]({{ site.baseurl }}/assets/astra/ns3_fig5_validation.png)
+
+The regimes survive the move to packet-level simulation. ns-3 sits **above** the
+analytical model everywhere (left panel) — it pays for packet headers and the
+congestion-control ramp the idealized model ignores, and that overhead is
+*relatively* larger for small messages — but the **shape is the same**: a flat
+latency-bound floor, a bandwidth-bound ramp, and ring consistently below switch.
+The clincher is the right panel: the **ring-over-switch speedup shrinks from ~2×
+(latency-bound) toward ~1.1× (bandwidth-bound)** in *both* backends, tracking
+each other closely. The packet-level simulator independently reproduces the
+central finding — **topology matters most when you're latency-bound** — which is
+exactly the confidence a second, more detailed backend is supposed to buy you.
 
 ## Reproducing
 

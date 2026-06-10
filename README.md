@@ -17,9 +17,13 @@ experiments/
                        latency-bound regime the stock integer-MB generator can't)
   run_sweep.py         emits torus/switch network + system configs, generates
                        workloads, runs the analytical backend, writes results CSV
-  plot_results.py      latency-vs-size, effective-BW, scaling-vs-nodes, speedup heatmap
+  run_ns3_slice.py     ns-3 packet-level validation: 8-node switch vs ring (1-D torus)
+  plot_results.py      latency-vs-size, effective-BW, scaling-vs-nodes, speedup heatmap,
+                       analytical-vs-ns-3 validation
   results/
     analytical.csv     220 rows: 2 collectives x 2 topologies x 5 node counts x 11 sizes
+    ns3.csv            12 rows: ns-3 AllReduce switch vs ring x 6 sizes (16KiB-16MiB)
+    analytical_ref8.csv  analytical points for the same 8-node fabrics (for overlay)
     plots/*.png        the figures used in the blog post
 site/                  the blog (Jekyll White Paper theme) with the write-up
 astra-sim/             the simulator (NOT committed — clone it, see below)
@@ -37,10 +41,16 @@ docker build -t astra-sim:latest astra-sim/
 docker run --rm -v "$PWD":/app -w /app/astra-sim astra-sim:latest \
   ./build/astra_analytical/build.sh
 
-# run the 220-point sweep, then plot on the host
+# run the 220-point analytical sweep, then plot on the host
 docker run --rm -v "$PWD":/app -w /app astra-sim:latest \
   bash -lc 'PYTHONPATH=/app:/app/astra-sim python experiments/run_sweep.py'
 python3 experiments/plot_results.py
+
+# (optional) ns-3 packet-level validation slice
+docker run --rm -v "$PWD":/app -w /app/astra-sim astra-sim:latest \
+  ./build/astra_ns3/build.sh
+docker run --rm -v "$PWD":/app -w /app astra-sim:latest \
+  bash -lc 'PYTHONPATH=/app:/app/astra-sim python experiments/run_ns3_slice.py'
 ```
 
 ## Method (one paragraph)
@@ -67,3 +77,7 @@ real congestion/protocol overhead.
   ~`2(√N−1)`), collapsing to **~1.1–1.5×** bandwidth-bound at 1 GiB.
 - The **latency→bandwidth crossover** moves with topology: at 16 NPUs, AllReduce
   crosses ~1 MB on the torus but ~4 MB on the switch.
+- **ns-3 validation:** the packet-level backend sits above the analytical model
+  (header + congestion-control overhead) but reproduces the same regimes — the
+  ring-over-switch speedup shrinks from ~2× (latency-bound) to ~1.1×
+  (bandwidth-bound) in both backends.

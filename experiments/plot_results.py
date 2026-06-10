@@ -174,6 +174,55 @@ def fig_speedup_heatmap(df, backend="analytical"):
     return p
 
 
+def fig_ns3_validation():
+    """Overlay the ns-3 packet-level slice against the analytical model for the
+    *same* 8-node switch and ring (1-D torus) fabrics. Validates that the regimes
+    (latency floor, bandwidth ramp, shrinking switch/ring gap) survive congestion."""
+    ns3 = pd.read_csv(os.path.join(RES, "ns3.csv"))
+    an = pd.read_csv(os.path.join(RES, "analytical_ref8.csv"))
+    for d in (ns3, an):
+        d["latency_us"] = d["latency_ns"] / 1e3
+    fab = {"switch": "#c0392b", "ring1d": "#2471a3"}
+    fab_lbl = {"switch": "Switch", "ring1d": "Ring (1-D torus)"}
+
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5.2))
+    ax = axes[0]
+    for topo, c in fab.items():
+        a = an[an.topology == topo].sort_values("size_bytes")
+        n = ns3[ns3.topology == topo].sort_values("size_bytes")
+        ax.loglog(a.size_bytes, a.latency_us, color=c, ls="--", marker="o", ms=5,
+                  lw=1.8, label=f"{fab_lbl[topo]} — analytical")
+        ax.loglog(n.size_bytes, n.latency_us, color=c, ls="-", marker="s", ms=6,
+                  lw=2.2, label=f"{fab_lbl[topo]} — ns-3 (packet-level)")
+    ax.set_title("AllReduce, 8 NPUs — analytical vs ns-3")
+    ax.set_xlabel("Message size (bytes)")
+    ax.set_ylabel("Collective latency (µs)")
+    ax.grid(True, which="both", ls=":", alpha=0.4)
+    ax.legend(fontsize=8.5, loc="upper left")
+
+    # right: switch/ring speedup vs size, both backends -> both shrink toward 1
+    ax = axes[1]
+    for name, d, ls, mk in [("analytical", an, "--", "o"), ("ns-3", ns3, "-", "s")]:
+        sw = d[d.topology == "switch"].sort_values("size_bytes").set_index("size_bytes").latency_ns
+        rg = d[d.topology == "ring1d"].sort_values("size_bytes").set_index("size_bytes").latency_ns
+        ratio = (sw / rg)
+        ax.semilogx(ratio.index, ratio.values, ls=ls, marker=mk, lw=2,
+                    color="#6c3483", label=f"{name}")
+    ax.axhline(1.0, color="grey", ls=":", lw=1)
+    ax.set_title("Ring speedup over Switch shrinks with size\n(latency-bound → bandwidth-bound)")
+    ax.set_xlabel("Message size (bytes)")
+    ax.set_ylabel("switch latency / ring latency  (×)")
+    ax.grid(True, which="both", ls=":", alpha=0.4)
+    ax.legend(fontsize=9)
+    fig.suptitle("ns-3 validation: packet-level simulation reproduces the analytical regimes",
+                 fontsize=13, y=1.0)
+    fig.tight_layout()
+    p = os.path.join(PLOTS, "ns3_fig5_validation.png")
+    fig.savefig(p, dpi=140, bbox_inches="tight")
+    plt.close(fig)
+    return p
+
+
 def main():
     df = load("analytical")
     made = [
@@ -182,6 +231,8 @@ def main():
         fig_scaling_vs_nodes(df),
         fig_speedup_heatmap(df),
     ]
+    if os.path.exists(os.path.join(RES, "ns3.csv")):
+        made.append(fig_ns3_validation())
     for p in made:
         print("wrote", p)
 

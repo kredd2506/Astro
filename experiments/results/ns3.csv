@@ -1,0 +1,13 @@
+backend,collective,topology,nodes,shape,dims,size_bytes,link_bw_GBps,link_lat_ns,latency_ns
+ns3,all_reduce,switch,8,8,1,16384,50.0,500.0,113944
+ns3,all_reduce,ring1d,8,8,1,16384,50.0,500.0,57272
+ns3,all_reduce,switch,8,8,1,65536,50.0,500.0,116436
+ns3,all_reduce,ring1d,8,8,1,65536,50.0,500.0,59204
+ns3,all_reduce,switch,8,8,1,262144,50.0,500.0,123996
+ns3,all_reduce,ring1d,8,8,1,262144,50.0,500.0,66764
+ns3,all_reduce,switch,8,8,1,1048576,50.0,500.0,154096
+ns3,all_reduce,ring1d,8,8,1,1048576,50.0,500.0,96864
+ns3,all_reduce,switch,8,8,1,4194304,50.0,500.0,279564
+ns3,all_reduce,ring1d,8,8,1,4194304,50.0,500.0,217628
+ns3,all_reduce,switch,8,8,1,16777216,50.0,500.0,784628
+ns3,all_reduce,ring1d,8,8,1,16777216,50.0,500.0,700684
