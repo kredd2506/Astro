@@ -1,0 +1,18 @@
+# ASTRA-sim is cloned separately (multi-GB, with submodules) — see README
+astra-sim/
+
+# generated workloads + temp per-run configs
+experiments/work/
+
+# python
+__pycache__/
+*.pyc
+
+# jekyll build output
+site/_site/
+site/.jekyll-cache/
+site/.sass-cache/
+node_modules/
+
+# astra-sim runtime logs
+log/

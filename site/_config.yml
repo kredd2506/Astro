@@ -1,0 +1,29 @@
+name: Manish Reddy
+description: >
+    Notes on systems, ML infrastructure, and network simulation.
+about: >
+    I work on distributed-ML systems and interconnect modeling. This site collects
+    write-ups of experiments — most recently, modeling collective-communication
+    scaling in ASTRA-sim across torus and switch fabrics.
+
+master_repo: false
+url: ""
+baseurl: ""
+markdown: kramdown
+highlighter: rouge
+
+plugins: ['jekyll-paginate', 'jekyll-gist', 'jekyll-feed']
+
+paginate: 4
+
+logo:             logo.png
+disqus_shortname:
+
+rtl: false
+owner:
+  name:           Manish Reddy
+  avatar:         "https://avatars.githubusercontent.com/u/kredd2506"
+  email:          "kreddy.manish@gmail.com"
+  github:         https://github.com/kredd2506
+  linkedin:
+  twitter:
