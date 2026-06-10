@@ -76,7 +76,7 @@ sweep, plotter) is in the repo.
 
 ## Result 1 — the two regimes, and where torus separates from switch
 
-![Latency vs message size, AllReduce and AllGather, 16 NPUs](/assets/astra/analytical_fig1_latency_vs_size_16npus.png)
+![Latency vs message size, AllReduce and AllGather, 16 NPUs]({{ site.baseurl }}/assets/astra/analytical_fig1_latency_vs_size_16npus.png)
 
 Read each curve left to right. On the left, latency is **flat** — doubling a
 tiny message barely moves it, because time is dominated by the fixed per-step
@@ -93,7 +93,7 @@ higher latency floor keeps it latency-bound longer.
 
 ## Result 2 — effective bandwidth saturating toward the roofline
 
-![Effective bus bandwidth vs message size, 16 NPUs](/assets/astra/analytical_fig2_effbw_vs_size_16npus.png)
+![Effective bus bandwidth vs message size, 16 NPUs]({{ site.baseurl }}/assets/astra/analytical_fig2_effbw_vs_size_16npus.png)
 
 The same data as *delivered* bandwidth (bytes ÷ time). Small messages waste the
 fabric — almost all the time is latency, so effective bandwidth is near zero.
@@ -103,7 +103,7 @@ of this curve *is* the latency→bandwidth crossover from Result 1.
 
 ## Result 3 — scaling with node count depends on the regime
 
-![Latency vs node count, small vs large message](/assets/astra/analytical_fig3_scaling_vs_nodes.png)
+![Latency vs node count, small vs large message]({{ site.baseurl }}/assets/astra/analytical_fig3_scaling_vs_nodes.png)
 
 This is the part that bites in practice. **Latency-bound (left, 4 KB):** the
 switch's latency grows almost **linearly with N** — 24 → 57 → 121 → 251 → 509 µs
@@ -115,7 +115,7 @@ nearly independent of `N` — and the gap narrows to a constant factor.
 
 ## Result 4 — putting it together: when does topology matter?
 
-![Torus speedup over switch across the size x node grid](/assets/astra/analytical_fig4_torus_speedup.png)
+![Torus speedup over switch across the size x node grid]({{ site.baseurl }}/assets/astra/analytical_fig4_torus_speedup.png)
 
 One picture for the whole study: torus speedup over switch for AllReduce across
 every (size, node) cell. The story is a **gradient**:
